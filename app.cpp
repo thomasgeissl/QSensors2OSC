@@ -122,7 +122,145 @@ void App::update()
             _oscSender->send(message);
         }
     }
+    if(_holsterSensor->isActive()){
+        auto value = _holsterSensor->reading()->holstered();
+        if(_oscActive){
+            auto message = new QOSCMessage("/QSensorsStream/holsterSensor");
+            message->addBool(value);
+            _oscSender->send(message);
+        }
+    }
+    if(_humiditySensor->isActive()){
+        auto abs = _humiditySensor->reading()->absoluteHumidity();
+        auto rel = _humiditySensor->reading()->relativeHumidity();
+        if(_oscActive){
+            auto message = new QOSCMessage("/QSensorsStream/humiditySensor");
+            message->addFloat(abs);
+            message->addFloat(rel);
+            _oscSender->send(message);
+        }
+    }
+    if(_irProximitySensor->isActive()){
+        auto value = _irProximitySensor->reading()->reflectance();
+        if(_oscActive){
+            auto message = new QOSCMessage("/QSensorsStream/irProximitySensor");
+            message->addFloat(value);
+            _oscSender->send(message);
+        }
+    }
+    if(_lidSensor->isActive()){
+        auto back = _lidSensor->reading()->backLidClosed();
+        auto front = _lidSensor->reading()->frontLidClosed();
+        if(_oscActive){
+            auto message = new QOSCMessage("/QSensorsStream/lidSensor");
+            message->addBool(back);
+            message->addBool(front);
+            _oscSender->send(message);
+        }
+    }
+    if(_lightSensor->isActive()){
+        auto value = _lightSensor->reading()->lux();
+        if(_oscActive){
+            auto message = new QOSCMessage("/QSensorsStream/lightSensor");
+            message->addFloat(value);
+            _oscSender->send(message);
+        }
+    }
+    if(_magnetometer->isActive()){
+        auto x = _magnetometer->reading()->x();
+        auto y = _magnetometer->reading()->y();
+        auto z = _magnetometer->reading()->z();
+        if(_oscActive){
+            auto message = new QOSCMessage("/QSensorsStream/magnetometer");
+            message->addFloat(x);
+            message->addFloat(y);
+            message->addFloat(z);
+            _oscSender->send(message);
+        }
+    }
+    if(_orientationSensor->isActive()){
+        auto orientation = _orientationSensor->reading()->orientation();
+        QString value = "undefined";
+        if(orientation == _orientationSensor->reading()->TopUp){
+            value = "TOPUP";
+        }else if(orientation == _orientationSensor->reading()->FaceUp){
+            value = "FACEUP";
+        }else if(orientation == _orientationSensor->reading()->RightUp){
+            value = "RIGHTUP";
+        }else if(orientation == _orientationSensor->reading()->TopDown){
+            value = "TOPDOWN";
+        }else if(orientation == _orientationSensor->reading()->FaceDown){
+            value = "FACEDOWN";
+        }
 
+        if(_oscActive){
+            auto message = new QOSCMessage("/QSensorsStream/orientationSensor");
+            message->addString(value);
+            _oscSender->send(message);
+        }
+    }
+    if(_pressureSensor->isActive()){
+        auto value = _pressureSensor->reading()->pressure();
+        if(_oscActive){
+            auto message = new QOSCMessage("/QSensorsStream/pressureSensor");
+            message->addFloat(value);
+            _oscSender->send(message);
+        }
+    }
+    if(_proximitySensor->isActive()){
+        auto value = _proximitySensor->reading()->close();
+        if(_oscActive){
+            auto message = new QOSCMessage("/QSensorsStream/proximitySensor");
+            message->addBool(value);
+            _oscSender->send(message);
+        }
+    }
+    if(_rotationSensor->isActive()){
+        auto x = _rotationSensor->reading()->x();
+        auto y = _rotationSensor->reading()->y();
+        auto z = _rotationSensor->reading()->z();
+        if(_oscActive){
+            auto message = new QOSCMessage("/QSensorsStream/rotationSensor");
+            message->addFloat(x);
+            message->addFloat(y);
+            message->addFloat(z);
+            _oscSender->send(message);
+        }
+    }
+    if(_tapSensor->isActive()){
+        auto doubleTap = _tapSensor->reading()->isDoubleTap();
+        auto dir = _tapSensor->reading()->tapDirection();
+        QString value = "undefined";
+        if(value == _tapSensor->reading()->X){
+            value = "X";
+        }else if(value == _tapSensor->reading()->Y){
+            value = "Y";
+        }else if(value == _tapSensor->reading()->Z){
+            value = "Z";
+        }else if(value == _tapSensor->reading()->X_Neg){
+            value = "NEGX";
+        }else if(value == _tapSensor->reading()->Y_Neg){
+            value = "NEGY";
+        }else if(value == _tapSensor->reading()->Z_Neg){
+            value = "NEGZ";
+        }
+        if(_oscActive){
+            auto message = new QOSCMessage("/QSensorsStream/tapSensor");
+            message->addString(value);
+            message->addBool(doubleTap);
+            _oscSender->send(message);
+        }
+    }
+    if(_tiltSensor->isActive()){
+        auto x = _tiltSensor->reading()->xRotation();
+        auto y = _tiltSensor->reading()->yRotation();
+        if(_oscActive){
+            auto message = new QOSCMessage("/QSensorsStream/tiltSensor");
+            message->addFloat(x);
+            message->addFloat(y);
+            _oscSender->send(message);
+        }
+    }
 }
 
 bool App::isSensorAvailable(QString key)
