@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include "qoscsender.h"
+
 #include <QAccelerometer>
 #include <QAltimeter>
 #include <QAmbientLightSensor>
@@ -22,7 +23,12 @@
 #include <QRotationSensor>
 #include <QTapSensor>
 #include <QTiltSensor>
+
 #include <QTimer>
+
+#include <QtWebSockets/QtWebSockets>
+//#include <QtMqtt/QtMqtt>
+
 
 class App : public QObject
 {
