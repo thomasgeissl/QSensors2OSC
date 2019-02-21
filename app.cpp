@@ -45,9 +45,6 @@ App::App(QObject *parent) : QObject(parent),
     _sensors["tapSensor"] = _tapSensor;
     _sensors["tiltSensor"] = _tiltSensor;
 
-
-
-
     _oscActive = true;
     _wsActive = false;
     _mqttActive = false;
@@ -55,7 +52,6 @@ App::App(QObject *parent) : QObject(parent),
     QTimer *timer = new QTimer(this);
     connect(timer, SIGNAL(timeout()), this, SLOT(update()));
     timer->start(1000/60);
-
 }
 
 void App::update()
@@ -136,6 +132,7 @@ bool App::isSensorAvailable(QString key)
 }
 void App::setSensorActive(QString key, bool value){
     if(!_sensors.contains(key)){
+        qDebug() << key << "not found";
         return;
     }
     if(value){
@@ -143,4 +140,20 @@ void App::setSensorActive(QString key, bool value){
     }else{
         _sensors[key]->stop();
     }
+}
+
+void App::oscChanged(bool active, QString host, int port){
+    _oscSender->setup(host, port);
+    _oscActive = active;
+}
+void App::wsChanged(bool active, QString host, int port){
+//    _oscSender->setup(host, port);
+    _wsActive = active;
+}
+void App::mqttChanged(bool active, QString host, int port){
+//    _oscSender->setup(host, port);
+    _mqttActive = active;
+}
+void App::sensorChanged(QString id, bool active){
+    setSensorActive(id, active);
 }

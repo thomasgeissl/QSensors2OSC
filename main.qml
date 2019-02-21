@@ -12,8 +12,10 @@ ApplicationWindow {
     width: 640
     height: 480
     title: qsTr("QSensorsStream")
-    signal qmlSignal(string msg)
-    signal exportSignal(string msg)
+    signal oscChanged(bool active, string host, int port)
+    signal wsChanged(bool active, string host, int port)
+    signal mqttChanged(bool active, string host, int port)
+    signal sensorChanged(string id, bool active)
     SwipeView {
         id: swipeView
         anchors.fill: parent
@@ -25,80 +27,156 @@ ApplicationWindow {
                 anchors.fill: parent
                 Column {
                     CheckBox {
+                        id: accelerometerCheckBox
                         text: qsTr("Accelerometer")
-                        checked: true
+                        checked: false
+                        onCheckedChanged: {
+                            gui.sensorChanged("accelerometer", accelerometerCheckBox.checked)
+                        }
                     }
                     CheckBox {
+                        id: altimeterCheckBox
                         text: qsTr("Altimeter")
                         checked: false
+                        onCheckedChanged: {
+                            gui.sensorChanged("altimeter", altimeterCheckBox.checked)
+                        }
                     }
                     CheckBox {
+                        id: ambientLightSensorCheckBox
                         text: qsTr("Ambient Light Sensor")
                         checked: false
+                        onCheckedChanged: {
+                            gui.sensorChanged("ambientLightSensor", ambientLightSensorCheckBox.checked)
+                        }
                     }
                     CheckBox {
+                        id: ambientTemperatureSensorCheckBox
                         text: qsTr("Ambient Temperature Sensor")
                         checked: false
+                        onCheckedChanged: {
+                            gui.sensorChanged("ambientTemperatureSensor", ambientTemperatureSensorCheckBox.checked)
+                        }
                     }
                     CheckBox {
+                        id: compassCheckBox
                         text: qsTr("Compass")
-                        checked: true
+                        checked: false
+                        onCheckedChanged: {
+                            gui.sensorChanged("compass", compassCheckBox.checked)
+                        }
                     }
                     CheckBox {
+                        id: distanceSensorCheckBox
                         text: qsTr("Distance Sensor")
                         checked: false
+                        onCheckedChanged: {
+                            gui.sensorChanged("distanceSensor", distanceSensorCheckBox.checked)
+                        }
                     }
                     CheckBox {
+                        id: gyroscopeCheckBox
                         text: qsTr("Gyroscope")
                         checked: false
+                        onCheckedChanged: {
+                            gui.sensorChanged("gyroscope", gyroscopeCheckBox.checked)
+                        }
                     }
                     CheckBox {
+                        id: holsterSensorCheckBox
                         text: qsTr("Holster Sensor")
                         checked: false
+                        onCheckedChanged: {
+                            gui.sensorChanged("holsterSensor", holsterSensorCheckBox.checked)
+                        }
                     }
                     CheckBox {
+                        id: humiditySensorCheckBox
                         text: qsTr("Humidity Sensor")
                         checked: false
+                        onCheckedChanged: {
+                            gui.sensorChanged("humiditySensor", humiditySensor.checked)
+                        }
                     }
                     CheckBox {
+                        id: irProximitySensorCheckBox
                         text: qsTr("IR Proximity Sensor")
                         checked: false
+                        onCheckedChanged: {
+                            gui.sensorChanged("irProximitySensor", irProximitySensorCheckBox.checked)
+                        }
                     }
                     CheckBox {
+                        id: lidSensorCheckBox
                         text: qsTr("Lid Sensor")
                         checked: false
+                        onCheckedChanged: {
+                            gui.sensorChanged("lidSensor", lidSensorCheckBox.checked)
+                        }
                     }
                     CheckBox {
+                        id: lightSensorCheckBox
                         text: qsTr("Light Sensor")
                         checked: false
+                        onCheckedChanged: {
+                            gui.sensorChanged("lightSensor", lightSensorCheckBox.checked)
+                        }
                     }
                     CheckBox {
+                        id: magnetoMeterCheckBox
                         text: qsTr("Magnetometer")
                         checked: false
+                        onCheckedChanged: {
+                            gui.sensorChanged("magnetoMeter", magnetoMeterCheckBox.checked)
+                        }
                     }
                     CheckBox {
+                        id: orientationSensorCheckBox
                         text: qsTr("Orientation Sensor")
                         checked: false
+                        onCheckedChanged: {
+                            gui.sensorChanged("orientationSensor", orientationSensorCheckBox.checked)
+                        }
                     }
                     CheckBox {
+                        id: pressureSensorCheckBox
                         text: qsTr("Pressure Sensor")
                         checked: false
+                        onCheckedChanged: {
+                            gui.sensorChanged("pressureSensor", pressureSensorCheckBox.checked)
+                        }
                     }
                     CheckBox {
+                        id: proximitySensorCheckBox
                         text: qsTr("Proximity Sensor")
                         checked: false
+                        onCheckedChanged: {
+                            gui.sensorChanged("proximitySensor", proximitySensorCheckBox.checked)
+                        }
                     }
                     CheckBox {
+                        id: rotationSensorCheckBox
                         text: qsTr("Rotation Sensor")
                         checked: false
+                        onCheckedChanged: {
+                            gui.sensorChanged("rotationSensor", rotationSensorCheckBox.checked)
+                        }
                     }
                     CheckBox {
+                        id: tapSensorCheckBox
                         text: qsTr("Tap Sensor")
                         checked: false
+                        onCheckedChanged: {
+                            gui.sensorChanged("tapSensor", tapSensorCheckBox.checked)
+                        }
                     }
                     CheckBox {
+                        id: tiltSensorCheckBox
                         text: qsTr("Tilt Sensor")
                         checked: false
+                        onCheckedChanged: {
+                            gui.sensorChanged("tiltSensor", tiltSensorCheckBox.checked)
+                        }
                     }
                 }
 
@@ -108,9 +186,6 @@ ApplicationWindow {
 
         Page {
             id: outputPage
-            signal oscChanged(bool active, string host, int port)
-            signal wsChanged(bool active, string host, int port)
-            signal mqttChanged(bool active, string host, int port)
             GridLayout {
                 id: grid
                 anchors.fill: parent
@@ -121,7 +196,7 @@ ApplicationWindow {
                     text: qsTr("OSC")
                     checked: true
                     onCheckedChanged: {
-                        outputPage.oscChanged(oscCheckBox.checked, oscHost.text, oscPort.text)
+                        gui.oscChanged(oscCheckBox.checked, oscHost.text, oscPort.text)
                     }
                 }
                 Text{
@@ -132,7 +207,7 @@ ApplicationWindow {
                     text: "localhost"
                     cursorVisible: false
                     onTextChanged: {
-                        outputPage.oscChanged(oscCheckBox.checked, oscHost.text, oscPort.text)
+                        gui.oscChanged(oscCheckBox.checked, oscHost.text, oscPort.text)
                     }
                 }
                 Text{
@@ -144,7 +219,7 @@ ApplicationWindow {
                     cursorVisible: false
                     validator: IntValidator{bottom: 1000; top: 56000;}
                     onTextChanged: {
-                        outputPage.oscChanged(oscCheckBox.checked, oscHost.text, oscPort.text)
+                        gui.oscChanged(oscCheckBox.checked, oscHost.text, oscPort.text)
                     }
                 }
 
@@ -154,7 +229,7 @@ ApplicationWindow {
                     text: qsTr("websocket")
                     checked: false
                     onCheckedChanged: {
-                        outputPage.wsChanged(wsCheckBox.checked, wsHost.text, wsPort.text)
+                        gui.wsChanged(wsCheckBox.checked, wsHost.text, wsPort.text)
                     }
                 }
                 Text{
@@ -165,7 +240,7 @@ ApplicationWindow {
                     text: "localhost"
                     cursorVisible: false
                     onTextChanged: {
-                        outputPage.wsChanged(wsCheckBox.checked, wsHost.text, wsPort.text)
+                        gui.wsChanged(wsCheckBox.checked, wsHost.text, wsPort.text)
                     }
                 }
                 Text{
@@ -177,7 +252,7 @@ ApplicationWindow {
                     cursorVisible: false
                     validator: IntValidator{bottom: 1000; top: 56000;}
                     onTextChanged: {
-                        outputPage.wsChanged(wsCheckBox.checked, wsHost.text, wsPort.text)
+                        gui.wsChanged(wsCheckBox.checked, wsHost.text, wsPort.text)
                     }
                 }
 
@@ -187,7 +262,7 @@ ApplicationWindow {
                     text: qsTr("mqtt")
                     checked: false
                     onCheckedChanged: {
-                        outputPage.mqttChanged(mqttCheckBox.checked, mqttHost.text, mqttPort.text)
+                        gui.mqttChanged(mqttCheckBox.checked, mqttHost.text, mqttPort.text)
                     }
                 }
                 Text{
@@ -198,7 +273,7 @@ ApplicationWindow {
                     text: "localhost"
                     cursorVisible: false
                     onTextChanged: {
-                        outputPage.mqttChanged(mqttCheckBox.checked, mqttHost.text, mqttPort.text)
+                        gui.mqttChanged(mqttCheckBox.checked, mqttHost.text, mqttPort.text)
                     }
                 }
                 Text{
@@ -210,7 +285,7 @@ ApplicationWindow {
                     cursorVisible: false
                     validator: IntValidator{bottom: 1000; top: 56000;}
                     onTextChanged: {
-                        outputPage.mqttChanged(mqttCheckBox.checked, mqttHost.text, mqttPort.text)
+                        gui.mqttChanged(mqttCheckBox.checked, mqttHost.text, mqttPort.text)
                     }
                 }
             }

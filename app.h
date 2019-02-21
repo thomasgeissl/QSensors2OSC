@@ -68,6 +68,10 @@ public slots:
         void update();
         bool isSensorAvailable(QString key);
         void setSensorActive(QString key, bool value);
+        void oscChanged(bool active, QString host, int port);
+        void wsChanged(bool active, QString host, int port);
+        void mqttChanged(bool active, QString host, int port);
+        void sensorChanged(QString id, bool active);
 };
 
 #endif // APP_H
