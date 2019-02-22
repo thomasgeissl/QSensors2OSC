@@ -49,6 +49,9 @@ App::App(QObject *parent) : QObject(parent),
     _wsActive = false;
     _mqttActive = false;
 
+    connect(_wsClient, SIGNAL(connected), this, SLOT(wsConnected));
+    connect(_wsClient, SIGNAL(closed), this, SLOT(wsClosed));
+
     QTimer *timer = new QTimer(this);
     connect(timer, SIGNAL(timeout()), this, SLOT(update()));
     timer->start(1000/60);
@@ -286,6 +289,9 @@ void App::oscChanged(bool active, QString host, int port){
 }
 void App::wsChanged(bool active, QString host, int port){
 //    _oscSender->setup(host, port);
+    auto url = QUrl(host);
+    url.setPort(port);
+    _wsClient->open(url);
     _wsActive = active;
 }
 void App::mqttChanged(bool active, QString host, int port){
@@ -294,4 +300,13 @@ void App::mqttChanged(bool active, QString host, int port){
 }
 void App::sensorChanged(QString id, bool active){
     setSensorActive(id, active);
+}
+void App::wsConnected(){
+    connect(_wsClient, SIGNAL(textMessageReceived), this, SLOT(wsMessage));
+}
+void App::wsClosed(){
+
+}
+void App::wsMessage(QString message){
+
 }

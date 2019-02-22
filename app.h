@@ -29,6 +29,8 @@
 #include <QtWebSockets/QtWebSockets>
 //#include <QtMqtt/QtMqtt>
 
+#include "libs/json/single_include/nlohmann/json.hpp
+using json = nlohmann::json;
 
 class App : public QObject
 {
@@ -37,6 +39,8 @@ class App : public QObject
         explicit App(QObject *parent = nullptr);
 	private:
         QOSCSender *_oscSender;
+        QWebSocket *_wsClient;
+
         QMap<QString, QSensor*> _sensors;
         QAccelerometer *_accelerometer;
         QAltimeter *_altimeter;
@@ -72,6 +76,9 @@ public slots:
         void wsChanged(bool active, QString host, int port);
         void mqttChanged(bool active, QString host, int port);
         void sensorChanged(QString id, bool active);
+        void wsConnected();
+        void wsClosed();
+        void wsMessage(QString message);
 };
 
 #endif // APP_H

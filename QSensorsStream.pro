@@ -16,6 +16,6 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 HEADERS += \
-    app.h
+    app.h ./libs/json/single_include/nlohmann/json.hpp
 
 include(./libs/QOSC/QOSC.pri)
