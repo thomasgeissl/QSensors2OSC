@@ -1,6 +1,7 @@
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
 #include <QQuickView>
+#include <QQuickStyle>
 #include "app.h"
 
 int main(int argc, char *argv[])
@@ -9,6 +10,7 @@ int main(int argc, char *argv[])
 	QGuiApplication app(argc, argv);
 
 	QQmlApplicationEngine engine;
+    QQuickStyle::setStyle("Material");
 	engine.load(QUrl(QLatin1String("qrc:/main.qml")));
 	auto gui = engine.rootObjects().first();
 

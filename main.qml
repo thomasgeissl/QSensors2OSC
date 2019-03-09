@@ -1,10 +1,9 @@
 import QtQuick 2.7
-import QtQuick.Controls 2.0
+import QtQuick.Controls 2.5
 import QtQuick.Dialogs 1.0
 import QtQuick.Controls 2.5
+import QtQuick.Controls.Material 2.3
 import QtQuick.Layouts 1.12
-
-
 
 ApplicationWindow {
     id: gui
@@ -16,6 +15,10 @@ ApplicationWindow {
     signal wsChanged(bool active, string host, int port)
     signal mqttChanged(bool active, string host, int port)
     signal sensorChanged(string id, bool active)
+
+    Material.theme: Material.Dark
+    Material.accent: Material.Orange
+
     SwipeView {
         id: swipeView
         anchors.fill: parent

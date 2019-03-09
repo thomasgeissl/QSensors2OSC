@@ -23,6 +23,7 @@ App::App(QObject *parent) : QObject(parent),
     _tapSensor(new QTapSensor(this)),
     _tiltSensor(new QTiltSensor(this))
 {
+    auto avaiableSensors = QSensor::sensorTypes();
     _accelerometer->setAccelerationMode(QAccelerometer::User);
 
     _sensors["accelerometer"] = _accelerometer;
