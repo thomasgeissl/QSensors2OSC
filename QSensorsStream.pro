@@ -1,4 +1,5 @@
 QT += qml quick sensors websockets
+#QT += mqtt
 
 CONFIG += c++11
 
