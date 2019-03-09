@@ -114,112 +114,226 @@ void App::readSensor(QString id){
         auto x = _accelerometer->reading()->x();
         auto y = _accelerometer->reading()->y();
         auto z = _accelerometer->reading()->z();
+        auto address = "/QSensorsStream/accelerometer";
         if(_oscActive){
-            auto message = new QOSCMessage("/QSensorsStream/accelerometer");
+            auto message = new QOSCMessage(address);
             message->addFloat(x);
             message->addFloat(y);
             message->addFloat(z);
             _oscSender->send(message);
         }
+        if(_wsActive){
+            json payload;
+            payload["type"] = address;
+            payload["x"] = x;
+            payload["y"] = y;
+            payload["z"] = z;
+            std::string text = payload.dump();
+            _wsClient->sendTextMessage(QString::fromStdString(text));
+        }
     }else if(id == "altimeter"){
+        QString address = "/"; address += QCoreApplication::applicationName(); address += id;
         auto value = _altimeter->reading()->altitude();
         if(_oscActive){
-            auto message = new QOSCMessage("/QSensorsStream/altimeter");
+            auto message = new QOSCMessage(address);
             message->addFloat(value);
             _oscSender->send(message);
         }
+        if(_wsActive){
+            json payload;
+            payload["type"] = address.toStdString();
+            payload["value"] = value;
+            std::string text = payload.dump();
+            _wsClient->sendTextMessage(QString::fromStdString(text));
+        }
     }else if(id == "ambientLightSensor"){
+        QString address = "/"; address += QCoreApplication::applicationName(); address += id;
         auto value = _ambientLightSensor->reading()->lightLevel();
         if(_oscActive){
-            auto message = new QOSCMessage("/QSensorsStream/ambientLightSensor");
+            auto message = new QOSCMessage(address);
             message->addInt(value);
             _oscSender->send(message);
         }
+        if(_wsActive){
+            json payload;
+            payload["type"] = address.toStdString();
+            payload["value"] = value;
+            std::string text = payload.dump();
+            _wsClient->sendTextMessage(QString::fromStdString(text));
+        }
     }else if(id == "ambientTemperatureSensor"){
+        QString address = "/"; address += QCoreApplication::applicationName(); address += id;
         auto value = _ambientTemperatureSensor->reading()->temperature();
         if(_oscActive){
-            auto message = new QOSCMessage("/QSensorsStream/ambientTemperatureSensor");
+            auto message = new QOSCMessage(address);
             message->addFloat(value);
             _oscSender->send(message);
         }
+        if(_wsActive){
+            json payload;
+            payload["type"] = address.toStdString();
+            payload["value"] = value;
+            std::string text = payload.dump();
+            _wsClient->sendTextMessage(QString::fromStdString(text));
+        }
     }else if(id == "compass"){
+        QString address = "/"; address += QCoreApplication::applicationName(); address += id;
         auto azimuth = _compass->reading()->azimuth();
         auto calibrationLevel = _compass->reading()->calibrationLevel();
         if(_oscActive){
-            auto message = new QOSCMessage("/QSensorsStream/compass");
+            auto message = new QOSCMessage(address);
             message->addFloat(azimuth);
             message->addFloat(calibrationLevel);
             _oscSender->send(message);
         }
+        if(_wsActive){
+            json payload;
+            payload["type"] = address.toStdString();
+            payload["azimuth"] = azimuth;
+            payload["calibrationLevel"] = calibrationLevel;
+            std::string text = payload.dump();
+            _wsClient->sendTextMessage(QString::fromStdString(text));
+        }
     }else if(id == "distanceSensor"){
+        QString address = "/"; address += QCoreApplication::applicationName(); address += id;
         auto value = _distanceSensor->reading()->distance();
         if(_oscActive){
-            auto message = new QOSCMessage("/QSensorsStream/distanceSensor");
+            auto message = new QOSCMessage(address);
             message->addFloat(value);
             _oscSender->send(message);
         }
+        if(_wsActive){
+            json payload;
+            payload["type"] = address.toStdString();
+            payload["value"] = value;
+            std::string text = payload.dump();
+            _wsClient->sendTextMessage(QString::fromStdString(text));
+        }
     }else if(id == "gyroscope"){
+        QString address = "/"; address += QCoreApplication::applicationName(); address += id;
         auto x = _gyroscope->reading()->x();
         auto y = _gyroscope->reading()->y();
         auto z = _gyroscope->reading()->z();
         if(_oscActive){
-            auto message = new QOSCMessage("/QSensorsStream/gyroscope");
+            auto message = new QOSCMessage(address);
             message->addFloat(x);
             message->addFloat(y);
             message->addFloat(z);
             _oscSender->send(message);
         }
+        if(_wsActive){
+            json payload;
+            payload["type"] = address.toStdString();
+            payload["x"] = x;
+            payload["y"] = y;
+            payload["z"] = z;
+            std::string text = payload.dump();
+            _wsClient->sendTextMessage(QString::fromStdString(text));
+        }
     }else if(id == "holsterSensor"){
+        QString address = "/"; address += QCoreApplication::applicationName(); address += id;
         auto value = _holsterSensor->reading()->holstered();
         if(_oscActive){
-            auto message = new QOSCMessage("/QSensorsStream/holsterSensor");
+            auto message = new QOSCMessage(address);
             message->addBool(value);
             _oscSender->send(message);
         }
+        if(_wsActive){
+            json payload;
+            payload["type"] = address.toStdString();
+            payload["value"] = value;
+            std::string text = payload.dump();
+            _wsClient->sendTextMessage(QString::fromStdString(text));
+        }
     }else if(id == "humiditySensor"){
+        QString address = "/"; address += QCoreApplication::applicationName(); address += id;
         auto abs = _humiditySensor->reading()->absoluteHumidity();
         auto rel = _humiditySensor->reading()->relativeHumidity();
         if(_oscActive){
-            auto message = new QOSCMessage("/QSensorsStream/humiditySensor");
+            auto message = new QOSCMessage(address);
             message->addFloat(abs);
             message->addFloat(rel);
             _oscSender->send(message);
         }
+        if(_wsActive){
+            json payload;
+            payload["type"] = address.toStdString();
+            payload["abs"] = abs;
+            payload["rel"] = rel;
+            std::string text = payload.dump();
+            _wsClient->sendTextMessage(QString::fromStdString(text));
+        }
     }else if(id == "irProximitySensor"){
+        QString address = "/"; address += QCoreApplication::applicationName(); address += id;
         auto value = _irProximitySensor->reading()->reflectance();
         if(_oscActive){
-            auto message = new QOSCMessage("/QSensorsStream/irProximitySensor");
+            auto message = new QOSCMessage(address);
             message->addFloat(value);
             _oscSender->send(message);
         }
+        if(_wsActive){
+            json payload;
+            payload["type"] = address.toStdString();
+            payload["value"] = value;
+            std::string text = payload.dump();
+            _wsClient->sendTextMessage(QString::fromStdString(text));
+        }
     }else if(id == "lidSensor"){
+        QString address = "/"; address += QCoreApplication::applicationName(); address += id;
         auto back = _lidSensor->reading()->backLidClosed();
         auto front = _lidSensor->reading()->frontLidClosed();
         if(_oscActive){
-            auto message = new QOSCMessage("/QSensorsStream/lidSensor");
+            auto message = new QOSCMessage(address);
             message->addBool(back);
             message->addBool(front);
             _oscSender->send(message);
         }
+        if(_wsActive){
+            json payload;
+            payload["type"] = address.toStdString();
+            payload["back"] = back;
+            payload["front"] = front;
+            std::string text = payload.dump();
+            _wsClient->sendTextMessage(QString::fromStdString(text));
+        }
     }else if(id == "lightSensor"){
+        QString address = "/"; address += QCoreApplication::applicationName(); address += id;
         auto value = _lightSensor->reading()->lux();
         if(_oscActive){
-            auto message = new QOSCMessage("/QSensorsStream/lightSensor");
+            auto message = new QOSCMessage(address);
             message->addFloat(value);
             _oscSender->send(message);
         }
+        if(_wsActive){
+            json payload;
+            payload["type"] = address.toStdString();
+            payload["value"] = value;
+            std::string text = payload.dump();
+            _wsClient->sendTextMessage(QString::fromStdString(text));
+        }
     }else if(id == "magnetometer"){
+        QString address = "/"; address += QCoreApplication::applicationName(); address += id;
         auto x = _magnetometer->reading()->x();
         auto y = _magnetometer->reading()->y();
         auto z = _magnetometer->reading()->z();
         if(_oscActive){
-            auto message = new QOSCMessage("/QSensorsStream/magnetometer");
+            auto message = new QOSCMessage(address);
             message->addFloat(x);
             message->addFloat(y);
             message->addFloat(z);
             _oscSender->send(message);
         }
+        if(_wsActive){
+            json payload;
+            payload["type"] = address.toStdString();
+            payload["x"] = x;
+            payload["y"] = y;
+            payload["z"] = z;
+            std::string text = payload.dump();
+            _wsClient->sendTextMessage(QString::fromStdString(text));
+        }
     }else if(id == "orientationSensor"){
+        QString address = "/"; address += QCoreApplication::applicationName(); address += id;
         auto orientation = _orientationSensor->reading()->orientation();
         QString value = "undefined";
         if(orientation == _orientationSensor->reading()->TopUp){
@@ -235,36 +349,70 @@ void App::readSensor(QString id){
         }
 
         if(_oscActive){
-            auto message = new QOSCMessage("/QSensorsStream/orientationSensor");
+            auto message = new QOSCMessage(address);
             message->addString(value);
             _oscSender->send(message);
         }
+        if(_wsActive){
+            json payload;
+            payload["type"] = address.toStdString();
+            payload["value"] = value.toStdString();
+            std::string text = payload.dump();
+            _wsClient->sendTextMessage(QString::fromStdString(text));
+        }
     }else if(id == "pressureSensor"){
+        QString address = "/"; address += QCoreApplication::applicationName(); address += id;
         auto value = _pressureSensor->reading()->pressure();
         if(_oscActive){
-            auto message = new QOSCMessage("/QSensorsStream/pressureSensor");
+            auto message = new QOSCMessage(address);
             message->addFloat(value);
             _oscSender->send(message);
         }
+        if(_wsActive){
+            json payload;
+            payload["type"] = address.toStdString();
+            payload["value"] = value;
+            std::string text = payload.dump();
+            _wsClient->sendTextMessage(QString::fromStdString(text));
+        }
     }else if(id == "proximitySensor"){
+        QString address = "/"; address += QCoreApplication::applicationName(); address += id;
         auto value = _proximitySensor->reading()->close();
         if(_oscActive){
-            auto message = new QOSCMessage("/QSensorsStream/proximitySensor");
+            auto message = new QOSCMessage(address);
             message->addBool(value);
             _oscSender->send(message);
         }
+        if(_wsActive){
+            json payload;
+            payload["type"] = address.toStdString();
+            payload["value"] = value;
+            std::string text = payload.dump();
+            _wsClient->sendTextMessage(QString::fromStdString(text));
+        }
     }else if(id == "rotationSensor"){
+        QString address = "/"; address += QCoreApplication::applicationName(); address += id;
         auto x = _rotationSensor->reading()->x();
         auto y = _rotationSensor->reading()->y();
         auto z = _rotationSensor->reading()->z();
         if(_oscActive){
-            auto message = new QOSCMessage("/QSensorsStream/rotationSensor");
+            auto message = new QOSCMessage(address);
             message->addFloat(x);
             message->addFloat(y);
             message->addFloat(z);
             _oscSender->send(message);
         }
+        if(_wsActive){
+            json payload;
+            payload["type"] = address.toStdString();
+            payload["x"] = x;
+            payload["y"] = y;
+            payload["z"] = z;
+            std::string text = payload.dump();
+            _wsClient->sendTextMessage(QString::fromStdString(text));
+        }
     }else if(id == "tapSensor"){
+        QString address = "/"; address += QCoreApplication::applicationName(); address += id;
         auto doubleTap = _tapSensor->reading()->isDoubleTap();
         auto dir = _tapSensor->reading()->tapDirection();
         QString value = "undefined";
@@ -282,19 +430,36 @@ void App::readSensor(QString id){
             value = "NEGZ";
         }
         if(_oscActive){
-            auto message = new QOSCMessage("/QSensorsStream/tapSensor");
+            auto message = new QOSCMessage(address);
             message->addString(value);
             message->addBool(doubleTap);
             _oscSender->send(message);
         }
+        if(_wsActive){
+            json payload;
+            payload["type"] = address.toStdString();
+            payload["value"] = value.toStdString();
+            payload["doubleTap"] = doubleTap;
+            std::string text = payload.dump();
+            _wsClient->sendTextMessage(QString::fromStdString(text));
+        }
     }else if(id == "tiltSensor"){
+        QString address = "/"; address += QCoreApplication::applicationName(); address += id;
         auto x = _tiltSensor->reading()->xRotation();
         auto y = _tiltSensor->reading()->yRotation();
         if(_oscActive){
-            auto message = new QOSCMessage("/QSensorsStream/tiltSensor");
+            auto message = new QOSCMessage(address);
             message->addFloat(x);
             message->addFloat(y);
             _oscSender->send(message);
+        }
+        if(_wsActive){
+            json payload;
+            payload["type"] = address.toStdString();
+            payload["x"] = x;
+            payload["y"] = y;
+            std::string text = payload.dump();
+            _wsClient->sendTextMessage(QString::fromStdString(text));
         }
     }
 }
