@@ -1,14 +1,18 @@
 #include <QGuiApplication>
+#include <QAndroidService>
 #include <QQmlApplicationEngine>
 #include <QQuickView>
+#include <QQuickStyle>
 #include "app.h"
 
 int main(int argc, char *argv[])
 {
-	QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
+    QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
+    QCoreApplication::setApplicationName("QSensorsStream");
 	QGuiApplication app(argc, argv);
 
 	QQmlApplicationEngine engine;
+    QQuickStyle::setStyle("Material");
 	engine.load(QUrl(QLatin1String("qrc:/main.qml")));
 	auto gui = engine.rootObjects().first();
 

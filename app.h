@@ -24,12 +24,10 @@
 #include <QTapSensor>
 #include <QTiltSensor>
 
-#include <QTimer>
-
 #include <QtWebSockets/QtWebSockets>
 //#include <QtMqtt/QtMqtt>
 
-#include "libs/json/single_include/nlohmann/json.hpp
+#include "libs/json/single_include/nlohmann/json.hpp"
 using json = nlohmann::json;
 
 class App : public QObject
@@ -79,6 +77,7 @@ public slots:
         void wsConnected();
         void wsClosed();
         void wsMessage(QString message);
+        void readSensor(QString id);
 };
 
 #endif // APP_H

@@ -1,4 +1,5 @@
-QT += qml quick sensors websockets
+QT += qml quick quickcontrols2 sensors websockets androidextras
+#QT += mqtt
 
 CONFIG += c++11
 
@@ -19,3 +20,8 @@ HEADERS += \
     app.h ./libs/json/single_include/nlohmann/json.hpp
 
 include(./libs/QOSC/QOSC.pri)
+
+OTHER_FILES += \
+#    qml/main.qml \
+#    android-sources/src/org/qtproject/example/notification/NotificationClient.java \
+#    android-sources/AndroidManifest.xml

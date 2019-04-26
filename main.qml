@@ -1,10 +1,9 @@
 import QtQuick 2.7
-import QtQuick.Controls 2.0
+import QtQuick.Controls 2.5
 import QtQuick.Dialogs 1.0
 import QtQuick.Controls 2.5
+import QtQuick.Controls.Material 2.3
 import QtQuick.Layouts 1.12
-
-
 
 ApplicationWindow {
     id: gui
@@ -16,10 +15,122 @@ ApplicationWindow {
     signal wsChanged(bool active, string host, int port)
     signal mqttChanged(bool active, string host, int port)
     signal sensorChanged(string id, bool active)
+
+    Material.theme: Material.Dark
+    Material.accent: Material.Orange
+
     SwipeView {
         id: swipeView
         anchors.fill: parent
         currentIndex: tabBar.currentIndex
+
+
+        Page {
+            id: outputPage
+            Column {
+                anchors.fill: parent
+                CheckBox {
+                    id: oscCheckBox
+                    anchors.left: parent.left
+                    anchors.right: parent.right
+                    text: qsTr("OSC")
+                    checked: false
+                    onCheckedChanged: {
+                        gui.oscChanged(oscCheckBox.checked, oscHost.text, oscPort.text)
+                    }
+                }
+
+                TextField {
+                    id: oscHost
+                    anchors.left: parent.left
+                    anchors.right: parent.right
+                    text: "127.0.0.1"
+                    cursorVisible: false
+                    onTextChanged: {
+                        gui.oscChanged(oscCheckBox.checked, oscHost.text, oscPort.text)
+                    }
+                }
+
+                TextField {
+                    id: oscPort
+                    anchors.left: parent.left
+                    anchors.right: parent.right
+                    text: "8000"
+                    cursorVisible: false
+                    validator: IntValidator{bottom: 1000; top: 56000;}
+                    onTextChanged: {
+                        gui.oscChanged(oscCheckBox.checked, oscHost.text, oscPort.text)
+                    }
+                }
+
+
+//                CheckBox {
+//                    id: wsCheckBox
+//                    text: qsTr("websocket")
+//                    checked: false
+//                    onCheckedChanged: {
+//                        gui.wsChanged(wsCheckBox.checked, wsHost.text, wsPort.text)
+//                    }
+//                }
+//                Text{
+//                    text: "Host"
+//                }
+//                TextInput {
+//                    id: wsHost
+//                    text: "localhost"
+//                    cursorVisible: false
+//                    onTextChanged: {
+//                        gui.wsChanged(wsCheckBox.checked, wsHost.text, wsPort.text)
+//                    }
+//                }
+//                Text{
+//                    text: "Port"
+//                }
+//                TextInput {
+//                    id: wsPort
+//                    text: "80"
+//                    cursorVisible: false
+//                    validator: IntValidator{bottom: 1000; top: 56000;}
+//                    onTextChanged: {
+//                        gui.wsChanged(wsCheckBox.checked, wsHost.text, wsPort.text)
+//                    }
+//                }
+
+
+//                CheckBox {
+//                    id: mqttCheckBox
+//                    text: qsTr("mqtt")
+//                    checked: false
+//                    onCheckedChanged: {
+//                        gui.mqttChanged(mqttCheckBox.checked, mqttHost.text, mqttPort.text)
+//                    }
+//                }
+//                Text{
+//                    text: "Host"
+//                }
+//                TextInput {
+//                    id: mqttHost
+//                    text: "localhost"
+//                    cursorVisible: false
+//                    onTextChanged: {
+//                        gui.mqttChanged(mqttCheckBox.checked, mqttHost.text, mqttPort.text)
+//                    }
+//                }
+//                Text{
+//                    text: "Port"
+//                }
+//                TextInput {
+//                    id: mqttPort
+//                    text: "1883"
+//                    cursorVisible: false
+//                    validator: IntValidator{bottom: 1000; top: 56000;}
+//                    onTextChanged: {
+//                        gui.mqttChanged(mqttCheckBox.checked, mqttHost.text, mqttPort.text)
+//                    }
+//                }
+            }
+        }
+
         Page {
             id: inputPage
             ScrollView {
@@ -183,123 +294,16 @@ ApplicationWindow {
             }
 
         }
-
-        Page {
-            id: outputPage
-            GridLayout {
-                id: grid
-                anchors.fill: parent
-                columns: 5
-
-                CheckBox {
-                    id: oscCheckBox
-                    text: qsTr("OSC")
-                    checked: true
-                    onCheckedChanged: {
-                        gui.oscChanged(oscCheckBox.checked, oscHost.text, oscPort.text)
-                    }
-                }
-                Text{
-                    text: "Host"
-                }
-                TextInput {
-                    id: oscHost
-                    text: "localhost"
-                    cursorVisible: false
-                    onTextChanged: {
-                        gui.oscChanged(oscCheckBox.checked, oscHost.text, oscPort.text)
-                    }
-                }
-                Text{
-                    text: "Port"
-                }
-                TextInput {
-                    id: oscPort
-                    text: "8000"
-                    cursorVisible: false
-                    validator: IntValidator{bottom: 1000; top: 56000;}
-                    onTextChanged: {
-                        gui.oscChanged(oscCheckBox.checked, oscHost.text, oscPort.text)
-                    }
-                }
-
-
-                CheckBox {
-                    id: wsCheckBox
-                    text: qsTr("websocket")
-                    checked: false
-                    onCheckedChanged: {
-                        gui.wsChanged(wsCheckBox.checked, wsHost.text, wsPort.text)
-                    }
-                }
-                Text{
-                    text: "Host"
-                }
-                TextInput {
-                    id: wsHost
-                    text: "localhost"
-                    cursorVisible: false
-                    onTextChanged: {
-                        gui.wsChanged(wsCheckBox.checked, wsHost.text, wsPort.text)
-                    }
-                }
-                Text{
-                    text: "Port"
-                }
-                TextInput {
-                    id: wsPort
-                    text: "80"
-                    cursorVisible: false
-                    validator: IntValidator{bottom: 1000; top: 56000;}
-                    onTextChanged: {
-                        gui.wsChanged(wsCheckBox.checked, wsHost.text, wsPort.text)
-                    }
-                }
-
-
-                CheckBox {
-                    id: mqttCheckBox
-                    text: qsTr("mqtt")
-                    checked: false
-                    onCheckedChanged: {
-                        gui.mqttChanged(mqttCheckBox.checked, mqttHost.text, mqttPort.text)
-                    }
-                }
-                Text{
-                    text: "Host"
-                }
-                TextInput {
-                    id: mqttHost
-                    text: "localhost"
-                    cursorVisible: false
-                    onTextChanged: {
-                        gui.mqttChanged(mqttCheckBox.checked, mqttHost.text, mqttPort.text)
-                    }
-                }
-                Text{
-                    text: "Port"
-                }
-                TextInput {
-                    id: mqttPort
-                    text: "1883"
-                    cursorVisible: false
-                    validator: IntValidator{bottom: 1000; top: 56000;}
-                    onTextChanged: {
-                        gui.mqttChanged(mqttCheckBox.checked, mqttHost.text, mqttPort.text)
-                    }
-                }
-            }
-        }
     }
 
     footer: TabBar {
         id: tabBar
         currentIndex: swipeView.currentIndex
         TabButton {
-            text: qsTr("input")
+            text: qsTr("communication")
         }
         TabButton {
-            text: qsTr("output")
+            text: qsTr("sensors")
         }
     }
 
